@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="com.spring.enterprise"/>
+    <!-- ===============================数据源配置 start ====================================-->
+    <!-- 主库，写操作 -->
+    <bean id="dataSourceMaster" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://192.168.59.129/sampledb"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Qixiafei@v1!"/>
+    </bean>
+
+    <!-- 从库，读操作 -->
+    <bean id="dataSourceSlave" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://192.168.59.130/sampledb"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Qixiafei@v1!"/>
+    </bean>
+
+    <!-- 动态数据源 -->
+    <bean id="dynamicDataSource" class="com.spring.enterprise.chapter2.dao.dynamic.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <!-- 指定lookup名字 -->
+                <entry key="write" value-ref="dataSourceMaster"/>
+                <entry key="read" value-ref="dataSourceSlave"/>
+            </map>
+        </property>
+        <!-- 指定默认数据源 -->
+        <property name="defaultTargetDataSource" ref="dataSourceSlave"/>
+    </bean>
+
+    <!-- 配置jdbcTemplate -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dynamicDataSource"/>
+    </bean>
+    <!-- ===============================数据源配置 end ====================================-->
+
+    <!-- ================Aop控制读写切换数据源 start======================== -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <aop:config>
+        <aop:aspect id="dataSourceAspectR" ref="dataSourceInterceptor">
+            <aop:pointcut id="dataSourceReadPoint" expression="
+            (execution(* com.spring.enterprise.chapter2.dao.*.update*(..))
+            or execution(* com.spring.enterprise.chapter2.dao.*.insert*(..))
+            or execution(* com.spring.enterprise.chapter2.dao.*.delete*(..))
+            )and args(..)"/>
+
+            <aop:before method="beforeUpdate" pointcut-ref="dataSourceReadPoint"/>
+        </aop:aspect>
+        <aop:aspect id="dataSourceAspectW" ref="dataSourceInterceptor">
+            <aop:pointcut id="dataSourceWritePoint" expression="
+            (  execution(* com.spring.enterprise.chapter2.dao.*.list*(..))
+            or execution(* com.spring.enterprise.chapter2.dao.*.query*(..))
+            or execution(* com.spring.enterprise.chapter2.dao.*.get*(..))
+            )and args(..)"/>
+            <aop:before method="beforeQuery" pointcut-ref="dataSourceWritePoint"/>
+        </aop:aspect>
+    </aop:config>
+    <!-- ================Aop控制读写切换数据源 end======================== -->
+</beans>

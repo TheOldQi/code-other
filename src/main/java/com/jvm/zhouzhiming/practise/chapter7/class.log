@@ -1,0 +1,67 @@
+Classfile /E:/self-study/arithmetic/workspace/practise/src/main/java/com/jvm/zhouzhiming/practise/chapter7/ClassLoadTest.class
+  Last modified 2017-9-21; size 434 bytes
+  MD5 checksum a2dd19858b02caacb343bfee2f94e18d
+  Compiled from "ClassLoadTest.java"
+public class ClassLoadTest
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #6.#15         // java/lang/Object."<init>":()V
+   #2 = Fieldref           #16.#17        // java/lang/System.out:Ljava/io/PrintStream;
+   #3 = Fieldref           #18.#19        // SubClass.value:I
+   #4 = Methodref          #20.#21        // java/io/PrintStream.println:(I)V
+   #5 = Class              #22            // ClassLoadTest
+   #6 = Class              #23            // java/lang/Object
+   #7 = Utf8               <init>
+   #8 = Utf8               ()V
+   #9 = Utf8               Code
+  #10 = Utf8               LineNumberTable
+  #11 = Utf8               main
+  #12 = Utf8               ([Ljava/lang/String;)V
+  #13 = Utf8               SourceFile
+  #14 = Utf8               ClassLoadTest.java
+  #15 = NameAndType        #7:#8          // "<init>":()V
+  #16 = Class              #24            // java/lang/System
+  #17 = NameAndType        #25:#26        // out:Ljava/io/PrintStream;
+  #18 = Class              #27            // SubClass
+  #19 = NameAndType        #28:#29        // value:I
+  #20 = Class              #30            // java/io/PrintStream
+  #21 = NameAndType        #31:#32        // println:(I)V
+  #22 = Utf8               ClassLoadTest
+  #23 = Utf8               java/lang/Object
+  #24 = Utf8               java/lang/System
+  #25 = Utf8               out
+  #26 = Utf8               Ljava/io/PrintStream;
+  #27 = Utf8               SubClass
+  #28 = Utf8               value
+  #29 = Utf8               I
+  #30 = Utf8               java/io/PrintStream
+  #31 = Utf8               println
+  #32 = Utf8               (I)V
+{
+  public ClassLoadTest();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 2: 0
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         3: getstatic     #3                  // Field SubClass.value:I
+         6: invokevirtual #4                  // Method java/io/PrintStream.println:(I)V
+         9: return
+      LineNumberTable:
+        line 5: 0
+        line 6: 9
+}
+SourceFile: "ClassLoadTest.java"
