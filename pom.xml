@@ -22,7 +22,7 @@
         <spring.boot.version>1.5.7.RELEASE</spring.boot.version>
         <mysql.driver.version>5.1.9</mysql.driver.version>
         <dbcp.version>1.4</dbcp.version>
-        <junit.version>3.8.1</junit.version>
+        <junit.version>4.13.1</junit.version>
         <jstl.version>1.2</jstl.version>
         <!-- 插件管理 start -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
